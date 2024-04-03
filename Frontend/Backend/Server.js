@@ -50,7 +50,9 @@ let db;
 
 if (process.env.JAWSDB_URL) {
     db = mysql.createConnection(process.env.JAWSDB_URL)
+    console.log('je suis dans if jawsdb', process.env.JAWSDB_URL)
 } else {
+    console.log('je suis dans else jawsdb donc en local')
     db = mysql.createConnection({
         host: 'localhost',
         user: 'root', // remplacez par votre utilisateur
@@ -92,7 +94,7 @@ db.connect(err => {
         )`;
 
     const createAvisNonVerifTable = `
-        CREATE TABLE IF NOT EXISTS avisNonVerif (
+        CREATE TABLE IF NOT EXISTS avisnonverif (
             id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(255) NOT NULL,
             message VARCHAR(255) NOT NULL,
@@ -100,7 +102,7 @@ db.connect(err => {
         )`;
 
     const createAvisVerifTable = `
-        CREATE TABLE IF NOT EXISTS avisVerif (
+        CREATE TABLE IF NOT EXISTS avisverif (
             id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(255) NOT NULL,
             message VARCHAR(255) NOT NULL,
@@ -124,12 +126,12 @@ db.connect(err => {
 
     db.query(createAvisNonVerifTable, err => {
         if (err) throw err;
-        console.log("Table 'avisNonVerif' prête");
+        console.log("Table 'avisnonverif' prête");
     });
 
     db.query(createAvisVerifTable, err => {
         if (err) throw err;
-        console.log("Table 'avisVerif' prête");
+        console.log("Table 'avisverif' prête");
     });
 });
 
@@ -177,14 +179,14 @@ app.get('/voitures', (req, res) => {
 });
 
 app.get('/avis-non-verif', (req, res) => {
-    const request = "SELECT * FROM avisNonVerif"
+    const request = "SELECT * FROM avisnonverif"
     db.query(request, (error, result) => {
         res.send(result);
     })
 });
 
 app.get('/avis-verif', (req, res) => {
-    const request = "SELECT * FROM avisVerif"
+    const request = "SELECT * FROM avisverif"
     db.query(request, (error, result) => {
         res.send(result);
     })

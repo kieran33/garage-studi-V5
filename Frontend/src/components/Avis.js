@@ -17,6 +17,8 @@ const Avis = () => {
         loadData();
     }, []);
 
+    console.log('data avis', data)
+
     return (
         <div className="conteneurAvis">
             <h1>Nos clients parle de nous</h1>

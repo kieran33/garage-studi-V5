@@ -61,12 +61,14 @@ const BlocVoitures = () => {
     console.log('kilometrage', kilometrage)
     console.log('price', price)
     console.log('year', year)
+    console.log("on va afficher les voitures")
 
     const filterVoiture = data.filter(
         (voiture) => (voiture.km >= minKilometrage && voiture.km <= kilometrage)
             && (voiture.price >= minPrice && voiture.price <= price)
             && (voiture.yearsCirculation >= minYear && voiture.yearsCirculation <= year)
     );
+
 
     return (
         <>
@@ -144,7 +146,8 @@ const BlocVoitures = () => {
                     <div className="listeDeVoitures">
                         {filterVoiture.map((voiture, index) => (
                             <div className="voiture" key={index}>
-                                <img className="imageVoiture" src={require(`../../Backend/uploads/${voiture.image}`)} />
+                                {console.log("on va afficher les voitures")}
+                                <img className="imageVoiture" src={`http://localhost:3002/uploads/${voiture.image}`} />
                                 <p>Id : {voiture.id}</p>
                                 <p>Marque : {voiture.brand}</p>
                                 <p>Kilométrage : {voiture.km} km</p>

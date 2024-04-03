@@ -16,6 +16,8 @@ const ApprouverOuSupprimerAvis = () => {
         loadData();
     }, []);
 
+    console.log('data', data)
+
     const handleDelete = (id) => {
         if (window.confirm("Êtes-vous sûr de vouloir supprimer définitivement cet avis ?")) {
             axios.delete(`http://localhost:3002/avis-non-verif/remove/${id}`);
