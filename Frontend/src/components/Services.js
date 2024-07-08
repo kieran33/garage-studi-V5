@@ -32,6 +32,7 @@ const Services = () => {
                             <img className="imageService" src={`http://localhost:3002/uploads/${service.image}`} />
                             <div className="texteService">
                                 <h3 className="nomService">{service.name}</h3>
+                                <p>{service.image}</p>
                                 <p className="paragrapheService">{service.content}</p>
                             </div>
                         </div>

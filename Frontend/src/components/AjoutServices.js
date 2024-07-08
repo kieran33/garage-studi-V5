@@ -42,7 +42,7 @@ const AjoutServices = () => {
 
         const headers = {
             'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${token}` // Ajout du token dans l'en-tête Authorization
+            'Authorization': /*`Bearer ${token}`*/ token // Ajout du token dans l'en-tête Authorization
         };
 
         const formData = new FormData();

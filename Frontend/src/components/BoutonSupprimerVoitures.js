@@ -18,12 +18,19 @@ const BoutonSupprimerVoitures = () => {
         loadData();
     }, []);
 
-    const handleDelete = (id) => {
-        if (window.confirm("Êtes-vous sûr de vouloir supprimer définitivement ce compte employé ?")) {
+    const handleDelete = async (id, marqueVoiture) => {
+        if (window.confirm("Êtes-vous sûr de vouloir supprimer définitivement cette voiture ?")) {
             axios.delete(`http://localhost:3002/voitures/remove/${id}`);
+
+            try {
+                await axios.delete(`http://localhost:3002/supprimer-voitures-vues/${marqueVoiture}`);
+            } catch (error) {
+                console.log(error)
+            }
+
             setTimeout(() => loadData(), 500);
-        }
-    }
+        };
+    };
 
     useEffect(() => {
         ReactModal.setAppElement('body');
@@ -52,7 +59,7 @@ const BoutonSupprimerVoitures = () => {
                                 <img className="imageSupprimerVoiture" src={`http://localhost:3002/uploads/${voiture.image}`} />
                                 <p>id : {voiture.id}</p>
                                 <p>marque : {voiture.brand}</p>
-                                <button onClick={() => handleDelete(voiture.id)}>Supprimer</button>
+                                <button onClick={() => handleDelete(voiture.id, voiture.brand)}>Supprimer</button>
                             </div>
                         ))}
                     </div>

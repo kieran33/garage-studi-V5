@@ -9,6 +9,9 @@ const BoutonAjoutVoitures = () => {
     const [newVoitures, setNewVoitures] = useState(getDefaultVoiture());
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+
+    const [marqueVoiture, setMarqueVoiture] = useState("");
+
     useEffect(() => {
         ReactModal.setAppElement('body');
     }, []);
@@ -75,12 +78,10 @@ const BoutonAjoutVoitures = () => {
 
         const headers = {
             'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${token}` // Ajout du token dans l'en-tête Authorization
+            'Authorization': token // Ajout du token dans l'en-tête Authorization
         };
 
         const formData = new FormData();
-
-        console.log('je suis dans handleAddVoiture');
 
         formData.append('brand', newVoitures.brand);
         formData.append('km', newVoitures.km);
@@ -88,14 +89,21 @@ const BoutonAjoutVoitures = () => {
         formData.append('yearsCirculation', newVoitures.yearsCirculation);
         formData.append('uploadImage', newVoitures.image);
 
-        axios.post('http://localhost:3002/addVoiture', formData, { headers })
+        /*axios.post('http://localhost:3002/addVoiture', formData, { headers })
             .then(response => {
                 console.log(response.data);
                 setNewVoitures(getDefaultVoiture());
             })
             .catch(error => {
                 console.error(error);
-            })
+            })*/
+
+        try {
+            axios.post('http://localhost:3002/addVoiture', formData, { headers });
+            axios.post("http://localhost:3002/ajout-voitures-vues", { marqueVoiture });
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -112,7 +120,10 @@ const BoutonAjoutVoitures = () => {
                         name="brand"
                         id="brand"
                         placeholder="La marque de la voiture"
-                        onChange={handleInputChange}
+                        onChange={(e) => {
+                            setMarqueVoiture(e.target.value)
+                            handleInputChange(e)
+                        }}
                         required
                     />
                     <label htmlFor="brand"></label>

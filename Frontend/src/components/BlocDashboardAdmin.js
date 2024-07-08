@@ -5,6 +5,7 @@ import SupprimerServices from './SupprimerServices';
 import CreerEmploye from './CreerEmploye';
 import SupprimerEmploye from './SupprimerEmploye';
 import BoutonFermeOuvert from './BoutonFermeOuvert';
+import CheckVoiturePopulaire from './CheckVoiturePopulaire';
 
 const BlocDashboardAdmin = () => {
 
@@ -12,6 +13,7 @@ const BlocDashboardAdmin = () => {
     const [isOpenSupprimer, setIsOpenSupprimer] = useState(false);
     const [isOpenCreer, setIsOpenCreer] = useState(false);
     const [isOpenSupprimerEmploye, setIsOpenSupprimerEmploye] = useState(false);
+    const [isOpenVoiturePopulaire, setIsOpenVoiturePopulaire] = useState(false);
 
     const isOpenAjoutServices = () => {
         setIsOpenAjout(true);
@@ -45,6 +47,14 @@ const BlocDashboardAdmin = () => {
         setIsOpenSupprimerEmploye(false);
     }
 
+    const isOpenCheckVoiturePopulaire = () => {
+        setIsOpenVoiturePopulaire(true);
+    }
+
+    const isCloseCheckVoiturePopulaire = () => {
+        setIsOpenVoiturePopulaire(false);
+    }
+
     return (
         <div>
             <div className="boutonDashboard">
@@ -72,6 +82,12 @@ const BlocDashboardAdmin = () => {
                     :
                     <button className="tailleBoutonDashboard" onClick={isCloseSupprimerCompteEmploye}>Fermer</button>
                 }
+
+                {isOpenVoiturePopulaire === false ?
+                    <button className="tailleBoutonDashboard" onClick={isOpenCheckVoiturePopulaire}>Voir voiture populaire</button>
+                    :
+                    <button className="tailleBoutonDashboard" onClick={isCloseCheckVoiturePopulaire}>Fermer</button>
+                }
                 <BoutonFermeOuvert />
             </div>
 
@@ -98,6 +114,12 @@ const BlocDashboardAdmin = () => {
                 null
                 :
                 <SupprimerEmploye />
+            }
+
+            {isOpenVoiturePopulaire === false ?
+                null
+                :
+                <CheckVoiturePopulaire />
             }
         </div>
     );

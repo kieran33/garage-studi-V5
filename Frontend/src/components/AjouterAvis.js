@@ -56,6 +56,7 @@ const AjouterAvis = () => {
                         <div className="EtoileAjoutAvis">
                             {[...Array(5)].map((star, index) => {
                                 const ratingValue = index + 1;
+                                //console.log(rating)
                                 return (
                                     <div className="positionStarRating">
                                         <label>

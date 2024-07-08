@@ -1,14 +1,24 @@
 import axios from 'axios';
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const BlocVoitures = () => {
 
-    /*const listeVoitures = JSON.parse(localStorage.getItem('liste de voitures'));
-    console.log(listeVoitures)*/
-
+    const [minKilometrage, setMinKilometrage] = useState();
+    const [maxKilometrage, setMaxKilometrage] = useState();
+    const [minPrice, setMinPrice] = useState();
+    const [maxPrice, setMaxPrice] = useState();
+    const [minYear, setMinYear] = useState();
+    const [maxYear, setMaxYear] = useState();
     const [data, setData] = useState([]);
+
+    const [marqueVoiture, setMarqueVoiture] = useState("");
+    const [id, setId] = useState("");
+
+    const role = localStorage.getItem("role");
+
+    const navigate = useNavigate();
 
     const loadData = async () => {
         const response = await axios.get('http://localhost:3002/voitures')
@@ -18,16 +28,6 @@ const BlocVoitures = () => {
     useEffect(() => {
         loadData();
     }, []);
-
-    console.log('data', data)
-
-    const [minKilometrage, setMinKilometrage] = useState();
-    const [maxKilometrage, setMaxKilometrage] = useState();
-    const [minPrice, setMinPrice] = useState();
-    const [maxPrice, setMaxPrice] = useState();
-    const [minYear, setMinYear] = useState();
-    const [maxYear, setMaxYear] = useState();
-
 
     useEffect(() => {
         if (data.length > 0) {
@@ -56,19 +56,32 @@ const BlocVoitures = () => {
     const [price, setPrice] = useState(maxPrice);
     const [year, setYear] = useState(maxYear);
 
-    console.log('max kilometrage', maxKilometrage)
-
-    console.log('kilometrage', kilometrage)
-    console.log('price', price)
-    console.log('year', year)
-    console.log("on va afficher les voitures")
-
     const filterVoiture = data.filter(
         (voiture) => (voiture.km >= minKilometrage && voiture.km <= kilometrage)
             && (voiture.price >= minPrice && voiture.price <= price)
             && (voiture.yearsCirculation >= minYear && voiture.yearsCirculation <= year)
     );
 
+    const augmenterVue = () => {
+        try {
+            axios.put(`http://localhost:3002/augmenter-vues-voitures`, { marqueVoiture })
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const detailsVoiture = () => {
+        navigate(`/voiture/${id}`);
+    };
+
+    useEffect(() => {
+        if (role === null && id !== "") {
+            augmenterVue()
+        }
+        if (id !== "") {
+            detailsVoiture()
+        }
+    }, [marqueVoiture])
 
     return (
         <>
@@ -141,25 +154,31 @@ const BlocVoitures = () => {
                         </button>
                     </div>
                 </div>
-
-                <div>
-                    <div className="listeDeVoitures">
-                        {filterVoiture.map((voiture, index) => (
-                            <div className="voiture" key={index}>
-                                {console.log("on va afficher les voitures")}
-                                <img className="imageVoiture" src={`http://localhost:3002/uploads/${voiture.image}`} />
+                <div className="listeDeVoitures">
+                    {filterVoiture.map((voiture, index) => (
+                        <div className="voiture" key={index}>
+                            <div>
+                                <img className="imageVoiture"
+                                    src={`http://localhost:3002/uploads/${voiture.image}`}
+                                    alt={voiture.brand}
+                                />
+                                <p>source image : {voiture.image}</p>
                                 <p>Id : {voiture.id}</p>
                                 <p>Marque : {voiture.brand}</p>
                                 <p>Kilométrage : {voiture.km} km</p>
                                 <p>Prix : {voiture.price} €</p>
                                 <p>Mise en circulation en : {voiture.yearsCirculation}</p>
-                                <Link to={`/voiture/${voiture.id}`}>
-                                    <button className="detailsVoiture">En savoir plus</button>
-                                </Link>
+                                <button className="detailsVoiture"
+                                    onClick={() => {
+                                        setMarqueVoiture(voiture.brand)
+                                        setId(voiture.id)
+                                    }}>
+                                    En savoir plus
+                                </button>
                             </div>
-                        ))}
-                    </div>
-                </div >
+                        </div>
+                    ))}
+                </div>
             </div >
         </>
     );

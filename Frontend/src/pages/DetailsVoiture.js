@@ -16,7 +16,6 @@ const DetailsVoiture = () => {
     const { id } = useParams();
 
     const idNumber = Number(id);
-    console.log('id', id)
 
     const loadData = async () => {
         const response = await axios.get('http://localhost:3002/voitures')
@@ -71,10 +70,10 @@ const DetailsVoiture = () => {
                     <p className="infosVoiture">Mise en circulation en : {dataVoiture.yearsCirculation}</p>
                     <p className="infosVoiture">Intéressé ? Contactez-nous par message ou par téléphone</p>
                     <div className="boutonContactDetailVoiture">
-                        <button className="boutonContactDetailVoitureMessage" onClick={openModal2}>Par message</button>
+                        <button className="boutonContactDetailVoitureMessage" onClick={openModal}>Par message</button>
                         <ReactModal
-                            isOpen={isModalOpen2}
-                            onRequestClose={closeModal2}
+                            isOpen={isModalOpen}
+                            onRequestClose={closeModal}
                             className="myModal2"
                         >
                             <form id="formulaireContactDetailVoiture" onSubmit={envoieMessage}>
@@ -95,20 +94,20 @@ const DetailsVoiture = () => {
 
                                 <div className="boutonformulaireContactDetailVoiture">
                                     <button type="submit" value="Envoyer" onClick={envoieMessage}>Envoyer</button>
-                                    <button onClick={closeModal2}>Annuler</button>
+                                    <button onClick={closeModal}>Annuler</button>
                                 </div>
                             </form>
                         </ReactModal>
 
-                        <button className="boutonContactDetailVoitureTelephone" onClick={openModal}>Par téléphone</button>
+                        <button className="boutonContactDetailVoitureTelephone" onClick={openModal2}>Par téléphone</button>
                         <ReactModal
-                            isOpen={isModalOpen}
-                            onRequestClose={closeModal}
+                            isOpen={isModalOpen2}
+                            onRequestClose={closeModal2}
                             className="myModal"
                         >
                             <h3>Notre numéro de téléphone : </h3>
                             <p>06 06 06 06 06</p>
-                            <button onClick={closeModal}>Fermer</button>
+                            <button onClick={closeModal2}>Fermer</button>
                         </ReactModal>
                     </div>
                 </div>
